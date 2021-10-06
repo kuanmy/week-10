@@ -7,6 +7,7 @@
         "parse": {"internetuserate": "number", "incomeperperson": "number", "urbanrate": "number"}
     }
   },
+  "width": "container",
   "height": 300,
   "title": "Income Per Person vs Internet Use Rate",
   "transform": [
