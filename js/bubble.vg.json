@@ -1,0 +1,133 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://kuanmy.github.io/week-10/data/continent_country_internet.csv",
+    "format": {
+        "type": "csv",
+        "parse": {"internetuserate": "number", "incomeperperson": "number", "urbanrate": "number"}
+    }
+  },
+  "width": 600,
+  "height": 500,
+  "title": "Income Per Person vs Internet Use Rate",
+  "transform": [
+    {
+      "filter": 
+      {
+        "and": [
+          "datum.incomeperperson > 0",
+          "datum.urbanrate > 0",
+          "datum.internetuserate > 1"
+        ]  
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "internetuserate",
+      "type": "quantitative",
+      "title": "Internet Use Rate",
+      "axis": {"tickCount": 2},
+      "scale": {"type": "log", "domain": [1, 100]}
+    },
+    "y": {
+      "field": "incomeperperson",
+      "type": "quantitative",
+      "title": "Income Per Person",
+      "axis": {"tickCount": 3},
+      "scale": {"type": "log", "domain": [100, 100000]}
+    }
+  },
+  "layer": [
+    {
+      "selection": {
+        "continent_highlight": {
+          "type": "multi",
+          "fields": ["continent"],
+          "bind": "legend"
+        }
+      },
+      "mark": "circle",
+      "encoding": {
+        "color": {
+          "title": "Continent",
+          "field": "continent", 
+          "type": "nominal", 
+          "scale": { 
+            "domain": [
+                "Europe",
+                "North America", 
+                "South America", 
+                "Oceania",
+                "Asia", 
+                "Africa" 
+            ], 
+            "range": [ 
+                "#4477AA", 
+                "#66CCEE", 
+                "#228833", 
+                "#CCBB44", 
+                "#EE6677", 
+                "#AA3377" 
+            ] 
+          }
+        },
+        "opacity": {
+          "condition": {
+            "selection": "continent_highlight",
+            "value": 0.6
+          },
+          "value": 0.1
+        },
+        "size": {
+          "title": "Urban Rate",
+          "field": "urbanrate",
+          "type": "quantitative",
+          "scale": {
+            "type": "threshold",
+            "domain": [30, 50, 70],
+            "range": [10, 100, 300, 600],
+            "domainMin": 0,
+            "domainMax": 100
+          },
+          "legend": {"format": ",d"}
+        },
+        "tooltip": [
+          {"type": "nominal", "field": "continent", "title": "Continent"},
+          {"type": "nominal", "field": "country", "title": "Country"},
+          {"type": "quantitative", "field": "incomeperperson", "title": "Income Per Person", "format": ",d"}, 
+          {"type": "quantitative", "field": "urbanrate", "title": "Urban Rate", "format": "d"},
+          {"type": "quantitative", "field": "internetuserate", "title": "Internet Use Rate", "format": "d"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -15,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "text": {"field": "country", "type": "nominal"},
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": {
+            "test": {
+              "or": [
+                "datum.country == 'United States of America'",
+                "datum.country == 'Mexico'",
+                "datum.country == 'Indonesia'",
+                "datum.country == 'Iraq'"
+              ]
+            },
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    }    
+  ]   
+}
