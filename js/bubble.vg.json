@@ -7,8 +7,7 @@
         "parse": {"internetuserate": "number", "incomeperperson": "number", "urbanrate": "number"}
     }
   },
-  "width": 600,
-  "height": 500,
+  "height": 300,
   "title": "Income Per Person vs Internet Use Rate",
   "transform": [
     {
@@ -86,9 +85,7 @@
           "scale": {
             "type": "threshold",
             "domain": [30, 50, 70],
-            "range": [10, 100, 300, 600],
-            "domainMin": 0,
-            "domainMax": 100
+            "range": [10, 100, 300, 600]
           },
           "legend": {"format": ",d"}
         },
